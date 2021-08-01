@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'docker build --force-rm -t "$ECR_REGISTRY/$APP_REPO_NAME:latest" .'
+                sh 'docker build --force-rm -t "563287996287.dkr.ecr.eu-west-1.amazonaws.com/techpro-repo/to-do-app:latest" .'
                 sh 'docker image ls'
             }
         }
@@ -15,14 +15,14 @@ pipeline {
             steps {
                 
                 sh 'aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 563287996287.dkr.ecr.eu-west-1.amazonaws.com'
-                sh 'docker push "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
+                sh 'docker push "563287996287.dkr.ecr.eu-west-1.amazonaws.com/techpro-repo/to-do-app:latest"'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
-                sh 'docker pull "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
-                sh 'docker run --name todo -dp 80:3000 "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 563287996287.dkr.ecr.eu-west-1.amazonaws.com'
+                sh 'docker build -t techpro-repo/to-do-app .'
+                sh 'docker run --name todo -dp 80:3000 "563287996287.dkr.ecr.eu-west-1.amazonaws.com/techpro-repo/to-do-app"'
             }
         }
     }
