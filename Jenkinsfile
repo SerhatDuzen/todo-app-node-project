@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "563287996287.dkr.ecr.eu-west-1.amazonaws.com"'
+                sh 'aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 563287996287.dkr.ecr.eu-west-1.amazonaws.com'
                 sh 'docker build -t techpro-repo/to-do-app .'
                 sh 'docker run --name todo -dp 80:3000 "563287996287.dkr.ecr.eu-west-1.amazonaws.com/techpro-repo/to-do-app"'
             }
